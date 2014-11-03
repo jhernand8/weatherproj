@@ -8,9 +8,9 @@ from bs4 import BeautifulSoup
 def home(request):
   allRain = MonthRainData.objects.all()
   retStr = 'Weather home test';
-  #if allRain:
-    #for rain in allRain:
-      #retStr += "<br/>" + rain.year + " " + rain.month + " " + rain.rain
+  if allRain:
+    for rain in allRain:
+      retStr += "<br/>" + rain.year + " " + rain.month + " " + rain.rain
   retStr += "parsed:  " + str(getRainAmountForMonth("KNUQ", 1, 2014))
   return http.HttpResponse(retStr)
 
