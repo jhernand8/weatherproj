@@ -27,7 +27,7 @@ def initData(request):
 # weather underground for the given month and year
 # and given station
 def getUrlForMonth(station, month, year):
-  return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MontlyHistory.html';
+  return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyHistory.html';
 
 # Returns a decimal with the amount of rain as a decimal
 # for the given month and year and place.
@@ -38,7 +38,7 @@ def getRainAmountForMonth(station, month, year):
   responsehtml = "".join(responseData)
   parsed = BeautifulSoup(responsehtml)
   divs = parsed.find_all("div", "precip-to-date", True)
-  datastr = ""
+  datastr = "" + urlForData + ":  "
   datastr += str(divs)
   #for d in divs:
     #datastr += str(d) + ":::"
