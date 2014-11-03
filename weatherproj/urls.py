@@ -8,5 +8,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/', 'weatherproj.views.home', name='home'),
-    url(r'^initRainData/', 'weatherproj.views.initData', name='initData')
+    url(r'^initRainData/', 'weatherproj.views.initData', name='initData'),
+    url(r'^initAvgData/', 'weatherproj.views.initAvgRain', name='initAvgRain')
 )

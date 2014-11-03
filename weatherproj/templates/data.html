@@ -1,0 +1,108 @@
+<html>
+<head>
+
+<style>
+td.aboveNormal {
+  color: #00FF00;
+}
+td.belowNormal {
+  color: #FF0000;
+}
+
+td {
+  text-align: right;
+  align: right;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+</style>
+<script src="http://fb.me/react-with-addons-0.11.1.js"></script>
+<script src="http://fb.me/JSXTransformer-0.11.1.js"></script>
+<script type="text/jsx">
+/** @jsx React.DOM */
+var monthData = {{ month_data }};
+var years = {{ years }};
+var YearRow = React.createClass({
+  render: function() {
+    var monthCells = [];
+    for (var i = 1; i <= 12; i++) {
+      var currMonthYearData = null;
+      var currYear = this.props.year;
+      for (var m = 0; m < this.props.allData.length; m++) {
+        var currData = this.props.allData[m];
+        if (currData.year == currYear && currData.month == i) {
+          currMonthYearData = currData;
+          break;
+        }
+      }
+
+      if (this.props.year == 2014 && i > 10) {
+        alert(this.props.year + "  " + i + "  " + currMonthYearData);
+      }
+      if (currMonthYearData) {
+        monthCells.push(<YearMonthCell data={currMonthYearData}  key={i} />);
+      }
+      else {
+        var empty = true;
+        monthCells.push(<YearMonthCell isEmpty={empty} key={i}/>);
+      }
+    }
+
+    return (<tr><td>{this.props.year}</td> {monthCells}</tr>);
+  }
+});
+
+var YearMonthCell = React.createClass({
+  render: function() {
+    if (this.props.isEmpty) {
+      return (<td>-</td>);
+    }
+    var avg = this.props.data.avg;
+    var rain = this.props.data.rain;
+    var tdclass = "normal";
+    if (avg < rain) {
+      tdclass = "aboveNormal";
+    }
+    else if (avg > rain) {
+      tdclass = "belowNormal";
+    }
+    return (<td className={tdclass}>{rain}</td>);
+  }
+});
+
+var MonthTotalTable = React.createClass({
+  render: function() {
+    var headerRow = ["Year", "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var headerElems = [];
+    for (var i = 0; i <= 13; i++) {
+      headerElems.push(<td><b>{headerRow[i]}</b></td>);
+    }
+
+    var yearRows = [];
+    var numYears = this.props.years.length;
+    for (var y = 0; y < numYears; y++) {
+      var currYear = this.props.years[y];
+      var rowKey = "year" + currYear;
+      yearRows.push(<YearRow year={currYear} allData={this.props.months} key={rowKey} />);
+    }  
+    return (
+      <table>
+        <tr> {headerElems}
+        </tr>
+        { yearRows }
+       </table>
+    );
+  }
+});
+
+React.renderComponent(
+  <MonthTotalTable  months={monthData} years={years.years}/>, document.body);
+</script>
+</head>
+<body>
+month data
+<div id="mainBodyDiv">
+</div>
+</body>
+</html>
