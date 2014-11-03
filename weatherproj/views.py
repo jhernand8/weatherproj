@@ -9,7 +9,7 @@ def home(request):
   retStr = 'Weather home test';
   if allRain:
     for rain in allRain:
-      retStr += "<br/>" + rain.year + " " + rain.month + " " rain.rain
+      retStr += "<br/>" + rain.year + " " + rain.month + " " + rain.rain
   return http.HttpResponse(retStr)
 
 # runs once to fetch the past n years of data for 
