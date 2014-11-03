@@ -11,7 +11,7 @@ def home(request):
   #if allRain:
     #for rain in allRain:
       #retStr += "<br/>" + rain.year + " " + rain.month + " " + rain.rain
-  retStr += "parsed:  " + getRainAmountForMonth("KNUQ", 1, 2014)
+  retStr += "parsed:  " + str(getRainAmountForMonth("KNUQ", 1, 2014))
   return http.HttpResponse(retStr)
 
 # runs once to fetch the past n years of data for 
@@ -38,9 +38,6 @@ def getRainAmountForMonth(station, month, year):
   responsehtml = "".join(responseData)
   parsed = BeautifulSoup(responsehtml)
   divs = parsed.select('div[class="precip-to-date"] > strong')
-  datastr = ""
   if divs:
-    return divs[0].get_text()
-  if response:
-    datastr += "resp: " + str(responsehtml)
-  return datastr
+    return float(divs[0].get_text())
+  return float("0.00")
