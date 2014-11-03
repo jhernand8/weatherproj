@@ -6,7 +6,7 @@ from weatherproj.models import MonthRainData
 from bs4 import BeautifulSoup
 
 def home(request):
-  #allRain = MonthRainData.objects.all()
+  allRain = MonthRainData.objects.all()
   retStr = 'Weather home test';
   #if allRain:
     #for rain in allRain:
