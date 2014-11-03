@@ -15,6 +15,9 @@ td {
   padding-left: 15px;
   padding-right: 15px;
 }
+span.source {
+  font-size: 8px;
+}
 
 </style>
 <script src="https://fb.me/react-0.12.0.js"></script>
@@ -84,11 +87,15 @@ var MonthTotalTable = React.createClass({
       yearRows.push(<YearRow year={currYear} allData={this.props.months} key={rowKey} />);
     }  
     return (
-      <table>
-        <tr> {headerElems}
-        </tr>
-        { yearRows }
-       </table>
+      <div id="containingDiv">
+        <h2>Rainfall data per month for 94043</h2>
+        <table>
+          <tr> {headerElems}
+          </tr>
+          { yearRows }
+         </table>
+         <br/><br/><br/><span className="source">data scraped from www.wunderground.com /history/airport/KNUQ</span>
+       </div>
     );
   }
 });
