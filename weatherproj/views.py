@@ -16,30 +16,35 @@ def home(request):
   retStr += "parsed:  " + str(getRainAmountForMonth("KNUQ", 1, 2014, False))
   return http.HttpResponse(retStr)
 
-# runs once to fetch the past n years of data for 
+# runs once to fetch data for the given year
 # 94043 and save it to the db
 def initData(request):
+  year = int(request.GET.get('year', '2013'));
   allRain = MonthRainData.objects.all();
   if allRain:
     for rain in allRain:
-      rain.delete();
-  avgs = AvgRainByMonth.objects.all()
-  for a in avgs:
-    a.delete()
+      if rain.year == year:
+        rain.delete();
 
   today = date.today()
-  for year in range(2004, today.year + 1) :
-    for month in range(1, 13):
-      if year == today.year and month > today.month:
-        break
-      rainAmt = getRainAmountForMonth("KNUQ", month, year, False)
-      rainObj = MonthRainData(month = month, year = year, rain = rainAmt)
-      rainObj.save()
+  for month in range(1, 13):
+    if year == today.year and month > today.month:
+      break
+    rainAmt = getRainAmountForMonth("KNUQ", month, year, False)
+    rainObj = MonthRainData(month = month, year = year, rain = rainAmt)
+    rainObj.save()
+  return http.HttpResponse('Rain data saved.')
+ 
+# updates the average rain table 
+def initAvgRain(request):
+  allAvgs = AvgRainByMonth.objects.all()
+  for avg in allAvgs:
+    avg.delete()
   for month in range(1, 13):
     rainAvg = getRainAmountForMonth("KNUQ", month, 2013, True)
     avg = AvgRainByMonth(month = month, avg_rain = rainAvg)
     avg.save()
-  return http.HttpResponse('Rain data saved.')
+  return http.HttpResponse('average data saved.')
 
 # returns the url to use to fetch data from 
 # weather underground for the given month and year
