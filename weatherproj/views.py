@@ -13,7 +13,7 @@ def home(request):
   if allRain:
     for rain in allRain:
       retStr += "<br/>" + str(rain.year) + " " + str(rain.month) + " " + str(rain.rain)
-  retStr += "parsed:  " + str(getRainAmountForMonth("KNUQ", 1, 2014, false))
+  retStr += "parsed:  " + str(getRainAmountForMonth("KNUQ", 1, 2014, False))
   return http.HttpResponse(retStr)
 
 # runs once to fetch the past n years of data for 
@@ -32,11 +32,11 @@ def initData(request):
     for month in range(1, 13):
       if year == today.year and month > today.month:
         break
-      rainAmt = getRainAmountForMonth("KNUQ", month, year, false)
+      rainAmt = getRainAmountForMonth("KNUQ", month, year, False)
       rainObj = Rain(month = month, year = year, rain = rainAmt)
       rainObj.save()
   for month in range(1, 13):
-    rainAvg = getRainAmountForMonth("KNUQ", month, 2013, true)
+    rainAvg = getRainAmountForMonth("KNUQ", month, 2013, True)
     avg = AvgRainByMonth(month = month, avg_rain = rainAvg)
     avg.save()
   return http.HttpResponse('Rain data saved.')
