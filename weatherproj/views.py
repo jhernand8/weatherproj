@@ -37,11 +37,10 @@ def getRainAmountForMonth(station, month, year):
   responseData = response.readlines()
   responsehtml = "".join(responseData)
   parsed = BeautifulSoup(responsehtml)
-  divs = parsed.find_all("div", "precip-to-date", True)
-  datastr = "" + urlForData + ":  "
-  datastr += str(divs)
-  #for d in divs:
-    #datastr += str(d) + ":::"
+  divs = parsed.select('div[class="precip-to-date"] > strong')
+  datastr = ""
+  if divs:
+    return divs[0].get_text()
   if response:
     datastr += "resp: " + str(responsehtml)
   return datastr
