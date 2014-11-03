@@ -2,6 +2,7 @@ from django import http
 from django.template import RequestContext, loader
 import urllib2
 import json
+from weatherproj.models import AvgRainByMonth
 from weatherproj.models import MonthRainData
 from bs4 import BeautifulSoup
 from datetime import date
