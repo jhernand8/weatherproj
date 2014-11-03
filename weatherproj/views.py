@@ -35,11 +35,12 @@ def getRainAmountForMonth(station, month, year):
   urlForData = getUrlForMonth(station, month, year)
   response = urllib2.urlopen(urlForData)
   responseData = response.readlines()
-  if response:
-    return "resp: " + str(responseData)
-  parsed = BeautifulSoup(responseData)
+  responsehtml = "".join(responseData)
+  parsed = BeautifulSoup(responsehtml)
   divs = parsed.find("div", "precip-to-date", True)
   datastr = ""
   for d in divs:
     datastr += str(d) + ":::"
+  if response:
+    datastr += "resp: " + str(responsehtml)
   return datastr
