@@ -37,9 +37,6 @@ var YearRow = React.createClass({
         }
       }
 
-      if (this.props.year == 2014 && i > 10) {
-        alert(this.props.year + "  " + i + "  " + currMonthYearData);
-      }
       if (currMonthYearData) {
         monthCells.push(<YearMonthCell data={currMonthYearData}  key={i} />);
       }

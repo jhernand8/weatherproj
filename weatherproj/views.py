@@ -51,11 +51,10 @@ def initData(request):
   for month in range(1, 13):
     if year == today.year and month > today.month:
       break
-    monthsProc += str(month) + ", ";
     rainAmt = getRainAmountForMonth("KNUQ", month, year, False)
     rainObj = MonthRainData(month = month, year = year, rain = rainAmt)
     rainObj.save()
-  return http.HttpResponse('Rain data saved. Months: ' + monthsProc)
+  return http.HttpResponse('Rain data saved.');
  
 # updates the average rain table 
 def initAvgRain(request):
