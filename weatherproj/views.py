@@ -34,7 +34,7 @@ def getUrlForMonth(station, month, year):
 def getRainAmountForMonth(station, month, year):
   urlForData = getUrlForMonth(station, month, year)
   response = urllib2.urlopen(urlForData)
-  responseData = response.readLines()
+  responseData = response.readlines()
   parsed = BeautifulSoup(responseData)
   divs = parsed.find("div", "precip-to-date", True)
   datastr = ""
