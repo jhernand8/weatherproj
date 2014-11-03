@@ -33,7 +33,7 @@ def initData(request):
       if year == today.year and month > today.month:
         break
       rainAmt = getRainAmountForMonth("KNUQ", month, year, False)
-      rainObj = Rain(month = month, year = year, rain = rainAmt)
+      rainObj = MonthRainData(month = month, year = year, rain = rainAmt)
       rainObj.save()
   for month in range(1, 13):
     rainAvg = getRainAmountForMonth("KNUQ", month, 2013, True)
