@@ -29,12 +29,25 @@ def home(request):
       month_data.append(month_obj)
   yearsObj = {}
   yearsObj["years"] = list(years)
+
+  avgs = getAvgByMonth()
   template = loader.get_template('data.html')
   # from django.utils.safestring import mark_safe
   context = RequestContext(request, {
                            'month_data' : mark_safe(json.dumps(month_data, cls=DjangoJSONEncoder)),
-                           'years' : mark_safe(json.dumps(yearsObj, cls=DjangoJSONEncoder)) })
+                           'years' : mark_safe(json.dumps(yearsObj, cls=DjangoJSONEncoder)),
+                           'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)) })
   return http.HttpResponse(template.render(context))
+
+# Returns object of the average rain by month which can be converted to a json object
+def getAvgByMonth():
+  allAvgs = AvgRainByMonth.objects.order_by('month');
+  avgsData = {}
+  for avg in allAvgs:
+    avgsData[avg.month] = avg.avg_rain;
+  data = {}
+  data["averages"] = avgsData;
+  return data
 
 # runs once to fetch data for the given year
 # 94043 and save it to the db

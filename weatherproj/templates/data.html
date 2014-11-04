@@ -9,12 +9,23 @@ td.belowNormal {
   color: #FF0000;
 }
 
+.twiceNormal, .halfNormal {
+  font-weight: bold;
+}
+
 td {
   text-align: right;
   align: right;
   padding-left: 15px;
   padding-right: 15px;
 }
+
+tr.averageRow td {
+  font-weight: bold;
+  align: center;
+  text-align: center;
+}
+
 span.source {
   font-size: 8px;
 }
@@ -26,6 +37,7 @@ span.source {
 /** @jsx React.DOM */
 var monthData = {{ month_data }};
 var years = {{ years }};
+var avgs = {{ averages }};
 var YearRow = React.createClass({
   render: function() {
     var monthCells = [];
@@ -61,11 +73,19 @@ var YearMonthCell = React.createClass({
     var avg = this.props.data.avg;
     var rain = this.props.data.rain;
     var tdclass = "normal";
-    if (avg < rain) {
+
+    var percentOfNorm = 100 - (rain / avg) * 100;
+    if (avg < rain && percentOfNorm > -10 ) {
       tdclass = "aboveNormal";
     }
-    else if (avg > rain) {
+    else if (avg > rain && percentOfNorm < 10) {
       tdclass = "belowNormal";
+    }
+    if (percentOfNorm > 50) { // 50% of normal
+      tdclass += " halfNormal";
+    }
+    else if (percentOfNorm < -100) { // twice normal
+      tdclass += " twiceNormal";
     }
     return (<td className={tdclass}>{rain}</td>);
   }
@@ -85,7 +105,13 @@ var MonthTotalTable = React.createClass({
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
       yearRows.push(<YearRow year={currYear} allData={this.props.months} key={rowKey} />);
-    }  
+    }
+
+    var avgRowTds = [];
+    avgRowTds.push(<td>Average</td>);
+    for (var m = 1; m < 12; m++) {
+      avgRowTds.push(<td>this.props.averages[m]</td>);
+    }
     return (
       <div id="containingDiv">
         <h2>Rainfall data per month for 94043</h2>
@@ -93,6 +119,7 @@ var MonthTotalTable = React.createClass({
           <tr> {headerElems}
           </tr>
           { yearRows }
+          <tr className="averageRow">{avgRowTds}</tr>
          </table>
          <br/><br/><br/><span className="source">data scraped from www.wunderground.com /history/airport/KNUQ</span>
        </div>
@@ -101,7 +128,7 @@ var MonthTotalTable = React.createClass({
 });
 
 React.renderComponent(
-  <MonthTotalTable  months={monthData} years={years.years}/>, document.body);
+  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages}/>, document.body);
 </script>
 </head>
 <body>
