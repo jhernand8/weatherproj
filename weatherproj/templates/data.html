@@ -145,6 +145,7 @@ var RunningTotalsTable = React.createClass({
       avgsRow.push(<td>{this.props.totals.runningTotals[i]}</td>);
     }
     var numYears = this.props.years.length;
+    var yearRows = [];
     for (var y = 0; y < numYears; y++) {
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
@@ -156,6 +157,7 @@ var RunningTotalsTable = React.createClass({
         Running totals start in July and are cumulative through June of the next year.<br/>
         <table>
           <tr>{headerRow}</tr>
+          {yearRows}
           <tr><td>Average running total</td>
             {avgsRow}
           </tr>
