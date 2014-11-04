@@ -59,7 +59,7 @@ def getRunningTotalObj(allRain, allAvgs):
     monthTotalObj["year"] = monthRain.year
     monthTotalObj["avg"] = runningTotalAvg[monthRain.month]
     monthTotalObj["rain"] = currSum
-    totals.push(monthTotalObj)
+    totals.append(monthTotalObj)
   totalObj["runningTotals"] = runningTotalAvg
   totalObj["monthTotals"] = totals
   
