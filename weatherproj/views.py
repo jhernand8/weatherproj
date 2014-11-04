@@ -50,7 +50,7 @@ def getRunningTotalObj(allRain, allAvgs):
   totals = []
   currSum = 0;
   for monthRain in allRain:
-    // reset sum when we get to July as it starts a new "season"
+    # reset sum when we get to July as it starts a new "season"
     if monthRain.month == 7:
       currSum = 0
     currSum += monthRain.rain
