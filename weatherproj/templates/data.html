@@ -38,6 +38,8 @@ span.source {
 var monthData = {{ month_data }};
 var years = {{ years }};
 var averages = {{ averages }};
+var totals = {{ totals }};
+
 var YearRow = React.createClass({
   render: function() {
     var monthCells = [];
@@ -75,10 +77,10 @@ var YearMonthCell = React.createClass({
     var tdclass = "normal";
 
     var percentOfNorm = 100 - (rain / avg) * 100;
-    if (avg < rain && percentOfNorm > -10 ) {
+    if (avg < rain) {
       tdclass = "aboveNormal";
     }
-    else if (avg > rain && percentOfNorm < 10) {
+    else if (avg > rain) {
       tdclass = "belowNormal";
     }
     if (percentOfNorm > 50) { // 50% of normal
@@ -110,7 +112,7 @@ var MonthTotalTable = React.createClass({
     var avgRowTds = [];
     avgRowTds.push(<td>Average</td>);
     for (var m = 1; m < 12; m++) {
-      avgRowTds.push(<td>this.props.averages[m]</td>);
+      avgRowTds.push(<td>{this.props.averages[m]}</td>);
     }
     return (
       <div id="containingDiv">
@@ -128,12 +130,12 @@ var MonthTotalTable = React.createClass({
 });
 
 React.renderComponent(
-  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages}/>, document.body);
+  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages}/>, document.document.getElementById("mainBodyDiv"));
 </script>
 </head>
 <body>
-month data
 <div id="mainBodyDiv">
 </div>
+<div id="runningTotalsDiv"></div>
 </body>
 </html>
