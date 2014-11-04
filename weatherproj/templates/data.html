@@ -92,15 +92,20 @@ var YearMonthCell = React.createClass({
     return (<td className={tdclass}>{rain}</td>);
   }
 });
-
-var MonthTotalTable = React.createClass({
-  render: function() {
-    var headerRow = ["Year", "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+var getHeaderElems = function(firstElemName) {
+    var headerRow = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     var headerElems = [];
+    headerElems.push(<td><b>{firstElemName}</b></td>);
     for (var i = 0; i <= 13; i++) {
       headerElems.push(<td><b>{headerRow[i]}</b></td>);
     }
+    return headerElems;
 
+};
+
+var MonthTotalTable = React.createClass({
+  render: function() {
+    var headerElems = getHeaderElems("Year");
     var yearRows = [];
     var numYears = this.props.years.length;
     for (var y = 0; y < numYears; y++) {
@@ -111,7 +116,7 @@ var MonthTotalTable = React.createClass({
 
     var avgRowTds = [];
     avgRowTds.push(<td>Average</td>);
-    for (var m = 1; m < 12; m++) {
+    for (var m = 1; m <= 12; m++) {
       avgRowTds.push(<td>{this.props.averages[m]}</td>);
     }
     return (
@@ -134,17 +139,29 @@ React.renderComponent(
 
 var RunningTotalsTable = React.createClass({
   render: function() {
-    var headerRow = ["Year", "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var headerRow = getHeaderElems("Year");
+    var avgsRow = [];
+    for (var i = 1; i <= 12; i++) {
+      avgsRow.push(<td>{this.props.totals.runningTotals[i]}</td>);
+    }
     return (
       <div id="runningTotals">
         <h2>Running totals for seasons</h2>
         Running totals start in July and are cumulative through June of the next year.<br/>
         <table>
+          <tr>{headerRow}</tr>
+          <tr><td>Average running total</td>
+            {avgsRow}
+          </tr>
         </table>
       </div>
     );
   }
 });
+
+React.renderComponent(
+  <RunningTotalsTable totals={totals}/>,
+   document.getElementById("runningTotalsDiv"));
 </script>
 </head>
 <body>
