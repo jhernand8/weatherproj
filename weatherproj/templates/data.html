@@ -3,7 +3,7 @@
 
 <style>
 td.aboveNormal {
-  color: #00FF00;
+  color: #0000FF;
 }
 td.belowNormal {
   color: #FF0000;
@@ -89,6 +89,7 @@ var YearMonthCell = React.createClass({
     else if (percentOfNorm < -100) { // twice normal
       tdclass += " twiceNormal";
     }
+    rain = Math.round(rain * 100) / 100;
     return (<td className={tdclass}>{rain}</td>);
   }
 });
@@ -142,7 +143,9 @@ var RunningTotalsTable = React.createClass({
     var headerRow = getHeaderElems("Year");
     var avgsRow = [];
     for (var i = 1; i <= 12; i++) {
-      avgsRow.push(<td>{this.props.totals.runningTotals[i]}</td>);
+      var currAvg = this.props.totals.runningTotals[i];
+      currAvg = Math.round(currAvg * 100) / 100;
+      avgsRow.push(<td>{currAvg}</td>);
     }
     var numYears = this.props.years.length;
     var yearRows = [];
