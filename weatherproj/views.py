@@ -39,6 +39,13 @@ def home(request):
                            'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)) })
   return http.HttpResponse(template.render(context))
 
+# Constructs object to pass to html for the running total and average
+# running total for each month in each year of rainfall for that season -
+# season being July 1 - June 30.
+def getRunningTotalObj(allRain, allAvgs):
+  totalObj = {}
+  return totalObj;
+  
 # Returns object of the average rain by month which can be converted to a json object
 def getAvgByMonth():
   allAvgs = AvgRainByMonth.objects.order_by('month');
