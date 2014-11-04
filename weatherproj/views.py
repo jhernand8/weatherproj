@@ -47,7 +47,21 @@ def home(request):
 def getRunningTotalObj(allRain, allAvgs):
   runningTotalAvg = getRunningTotalAverages(allAvgs)
   totalObj = {}
+  totals = []
+  currSum = 0;
+  for monthRain in allRain:
+    // reset sum when we get to July as it starts a new "season"
+    if monthRain.month == 7:
+      currSum = 0
+    currSum += monthRain.rain
+    monthTotalObj = {}
+    monthTotalObj["month"] = monthRain.month
+    monthTotalObj["year"] = monthRain.year
+    monthTotalObj["avg"] = runningTotalAvg[month]
+    monthTotalObj["rain"] = currSum
+    totals.push(monthTotalObj])
   totalObj["runningTotals"] = runningTotalAvg
+  totalObj["monthTotals"] = totals
   
   return totalObj;
 
