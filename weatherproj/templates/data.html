@@ -130,7 +130,21 @@ var MonthTotalTable = React.createClass({
 });
 
 React.renderComponent(
-  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages}/>, document.document.getElementById("mainBodyDiv"));
+  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages}/>, document.getElementById("mainBodyDiv"));
+
+var RunningTotalsTable = React.createClass({
+  render: function() {
+    var headerRow = ["Year", "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    return (
+      <div id="runningTotals">
+        <h2>Running totals for seasons</h2>
+        Running totals start in July and are cumulative through June of the next year.<br/>
+        <table>
+        </table>
+      </div>
+    );
+  }
+});
 </script>
 </head>
 <body>
