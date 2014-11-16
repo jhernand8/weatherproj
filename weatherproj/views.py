@@ -2,6 +2,7 @@ from django import http
 from django.template import RequestContext, loader
 import urllib2
 import json
+import sys
 from weatherproj.models import AvgRainByMonth
 from weatherproj.models import MonthRainData
 from bs4 import BeautifulSoup
@@ -93,6 +94,8 @@ def initData(request):
   minYear = 2000;
   today = date.today()
   allRain = MonthRainData.objects.order_by('year', 'month').all();
+  print "init rain data " + str(today) + " "  + str(minYear);
+  sys.stdout.flush()
   for year in range(minYear, today.year + 1):
     for month in range(1, 13):
       if year == today.year and month > today.month:
