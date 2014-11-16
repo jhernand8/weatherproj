@@ -93,9 +93,9 @@ def getAvgByMonth():
 def initData(request):
   minYear = 2000;
   today = date.today()
+  outStr = ""
   allRain = MonthRainData.objects.order_by('year', 'month').all();
-  print "init rain data " + str(today) + " "  + str(minYear);
-  sys.stdout.flush()
+  outStr += "init rain data " + str(today) + " "  + str(minYear);
   for year in range(minYear, today.year + 1):
     for month in range(1, 13):
       if year == today.year and month > today.month:
@@ -114,13 +114,12 @@ def initData(request):
       else:
         shouldUpdate = True
       if shouldUpdate:
-        print "updating rain for: " + str(year) + " " + str(month) + "\n"
-        sys.stdout.flush()
+        outStr += "updating rain for: " + str(year) + " " + str(month) + "\n"
         rainAmt = getRainAmountForMonth("KNUQ", month, year, False);
         rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
         rainObj.save() 
 
-  return http.HttpResponse('Rain data saved.');
+  return http.HttpResponse('Rain data saved.' + outStr);
  
 # Looks thru the list of MonthRainData objects for one with the
 # given month and year and returns that or none if not present.
