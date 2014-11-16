@@ -103,7 +103,7 @@ def initData(request):
         if rain.update_date:
           if rain.update_date.year < year:
             shouldUpdate = True
-          else if rain.update_date.year == year:
+          elif rain.update_date.year == year:
             if rain.update_date.month >= month:
               shouldUpdate = True
         if shouldUpdate:
