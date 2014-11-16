@@ -112,6 +112,7 @@ def initData(request):
         shouldUpdate = True
       if shouldUpdate:
         print "updating rain for: " + str(year) + " " + str(month) + "\n"
+        sys.stdout.flush()
         rainAmt = getRainAmountForMonth("KNUQ", month, year, False);
         rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
         rainObj.save() 
