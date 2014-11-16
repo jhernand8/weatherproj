@@ -101,18 +101,26 @@ def initData(request):
       if year == today.year and month > today.month:
         break
       rain = findForMonthAndYear(month, year, allRain);
+      outStr += "<br/> " + str(year) +": " + str(month) + " " + str(rain);
       shouldUpdate = False
       if rain: # only update if no update date or update date is before end of that month
+        outStr += "<br/> found for " + str(year) + " " + str(month);
         if rain.update_date:
+          outStr += "<br/> found for " + str(year) + " " + str(month) + " found date";
           if rain.update_date.year < year:
             shouldUpdate = True
           elif rain.update_date.year == year:
             if rain.update_date.month >= month:
               shouldUpdate = True
+        else:
+          outStr += "<br/> found for " + str(year) + " " + str(month) + " found no date";
+          shouldUpdate = True;
         if shouldUpdate:
           rain.delete()
       else:
+        outStr += "<br/> not found for " + str(year) + " " + str(month);
         shouldUpdate = True
+      outStr += "<br/> " + str(year) +": " + str(month) + " " + str(shouldUpdate);
       if shouldUpdate:
         outStr += "updating rain for: " + str(year) + " " + str(month) + "\n"
         rainAmt = getRainAmountForMonth("KNUQ", month, year, False);
