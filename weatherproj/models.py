@@ -5,9 +5,9 @@ class MonthRainData(models.Model):
   month = models.IntegerField()
   rain = models.FloatField()
   year = models.IntegerField()
+  update_date = models.DateField()
 
 # stores the average amount of rain for a given month
 class AvgRainByMonth(models.Model):
   month = models.IntegerField(primary_key = True)
   avg_rain = models.FloatField()
-

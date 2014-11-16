@@ -87,26 +87,45 @@ def getAvgByMonth():
   data["averages"] = avgsData;
   return data
 
-# runs once to fetch data for the given year
+# runs to update data that is stale from 2000 to present
 # 94043 and save it to the db
 def initData(request):
-  year = int(request.GET.get('year', '2013'));
-  allRain = MonthRainData.objects.all();
-  if allRain:
-    for rain in allRain:
-      if rain.year == year:
-        rain.delete();
-
+  minYear = 2000;
   today = date.today()
-  monthsProc = "";
-  for month in range(1, 13):
-    if year == today.year and month > today.month:
-      break
-    rainAmt = getRainAmountForMonth("KNUQ", month, year, False)
-    rainObj = MonthRainData(month = month, year = year, rain = rainAmt)
-    rainObj.save()
+  allRain = MonthRainData.objects.order_by('year', 'month').all();
+ for year in range(minYear, today.year + 1):
+   for month in range(1, 13):
+     if year == today.year and month > today.month:
+       break
+     rain = findForMonthAndYear(month, year, allRain);
+     shouldUpdate = False
+     if rain: # only update if no update date or update date is before end of that month
+       if rain.update_date:
+         if rain.update_date.year < year:
+           shouldUpdate = True
+         else if rain.update_date.year == year:
+           if rain.update_date.month >= month:
+             shouldUpdate = True
+       if shouldUpdate:
+         rain.delete()
+     else:
+       shouldUpdate = True
+     if shouldUpdate:
+       print "updating rain for: " + str(year) + " " + str(month) + "\n"
+       rainAmt = getRainAmountForMonth("KNUQ", month, year, False);
+       rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
+       rainObj.save() 
+
   return http.HttpResponse('Rain data saved.');
  
+# Looks thru the list of MonthRainData objects for one with the
+# given month and year and returns that or none if not present.
+def findForMonthAndYear(month, year, allRain):
+  for rain in allRain:
+    if rain.month == month and rain.year == year:
+      return rain
+  return None;
+
 # updates the average rain table 
 def initAvgRain(request):
   allAvgs = AvgRainByMonth.objects.all()
