@@ -120,6 +120,7 @@ def initData(request):
         rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
         rainObj.save() 
 
+  outStr += "<br/><a href=\"/home/\">Home</a><br/><br/>";
   return http.HttpResponse('Rain data saved.' + outStr);
  
 # Looks thru the list of MonthRainData objects for one with the
