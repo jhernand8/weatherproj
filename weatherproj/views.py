@@ -88,11 +88,5 @@ def getAvgByMonth():
   data["averages"] = avgsData;
   return data
 
-# runs to update data that is stale from 2000 to present
-# 94043 and save it to the db
-def initData(request):
-
-  return http.HttpResponse('Rain data saved.');
- 
 
 
