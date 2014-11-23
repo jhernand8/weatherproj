@@ -20,7 +20,7 @@ class Command(BaseCommand):
       for month in range(1, 13):
         if year == today.year and month > today.month:
           break
-        rain = findForMonthAndYear(month, year, allRain);
+        rain = self.findForMonthAndYear(month, year, allRain);
         shouldUpdate = False
         if rain: # only update if no update date or update date is before end of that month
           if rain.update_date:
@@ -37,7 +37,7 @@ class Command(BaseCommand):
           shouldUpdate = True
         if shouldUpdate:
           outStr += "updating rain for: " + str(year) + " " + str(month) + "\n"
-          rainAmt = getRainAmountForMonth("KNUQ", month, year, False);
+          rainAmt = self.getRainAmountForMonth("KNUQ", month, year, False);
           rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
           rainObj.save() 
   
@@ -64,7 +64,7 @@ class Command(BaseCommand):
   # if isAvg, returns the average for the month. Otherwise the
   # total for the month
   def getRainAmountForMonth(self, station, month, year, isAvg):
-    urlForData = getUrlForMonth(station, month, year)
+    urlForData = self.getUrlForMonth(station, month, year)
     response = urllib2.urlopen(urlForData)
     responseData = response.readlines()
     responsehtml = "".join(responseData)
@@ -81,7 +81,7 @@ class Command(BaseCommand):
     for avg in allAvgs:
       avg.delete()
     for month in range(1, 13):
-      rainAvg = getRainAmountForMonth("KNUQ", month, 2013, True)
+      rainAvg = self.getRainAmountForMonth("KNUQ", month, 2013, True)
       avg = AvgRainByMonth(month = month, avg_rain = rainAvg)
       avg.save()
     return http.HttpResponse('average data saved.')
