@@ -45,8 +45,7 @@ class Command(BaseCommand):
 
   # Looks thru the list of MonthRainData objects for one with the
   # given month and year and returns that or none if not present.
-  @staticmethod
-  def findForMonthAndYear(month, year, allRain):
+  def findForMonthAndYear(self, month, year, allRain):
     for rain in allRain:
       if rain.month == month and rain.year == year:
         return rain
@@ -56,8 +55,7 @@ class Command(BaseCommand):
   # returns the url to use to fetch data from 
   # weather underground for the given month and year
   # and given station
-  @staticmethod
-  def getUrlForMonth(station, month, year):
+  def getUrlForMonth(self, station, month, year):
     return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyHistory.html';
 
 
@@ -65,8 +63,7 @@ class Command(BaseCommand):
   # for the given month and year and place.
   # if isAvg, returns the average for the month. Otherwise the
   # total for the month
-  @staticmethod
-  def getRainAmountForMonth(station, month, year, isAvg):
+  def getRainAmountForMonth(self, station, month, year, isAvg):
     urlForData = getUrlForMonth(station, month, year)
     response = urllib2.urlopen(urlForData)
     responseData = response.readlines()
@@ -79,8 +76,7 @@ class Command(BaseCommand):
       return float(divs[0].get_text())
     return float("0.00")
   # updates the average rain table 
-  @staticmethod
-  def initAvgRain(request):
+  def initAvgRain(self, request):
     allAvgs = AvgRainByMonth.objects.all()
     for avg in allAvgs:
       avg.delete()
