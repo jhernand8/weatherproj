@@ -24,7 +24,7 @@ class Command(BaseCommand):
         rain = self.findForMonthAndYear(month, year, allRain);
         shouldUpdate = False
         if rain:
-          shouldUpdate = should_update(rain)
+          shouldUpdate = self.should_update(rain)
           if shouldUpdate:
             rain.delete()
         else:
@@ -38,7 +38,7 @@ class Command(BaseCommand):
   # Helper to decide if we should update this rain object.
   # Update if no update date or if update date is before the end
   # of rain's month (with some buffer).
-  def should_update(rain):
+  def should_update(self, rain):
     if not rain.update_date:
       return True
     # approx end of month - using 28 since know all months have at least 28 days
