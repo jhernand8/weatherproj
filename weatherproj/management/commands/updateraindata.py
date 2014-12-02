@@ -4,6 +4,7 @@ from weatherproj.models import AvgRainByMonth
 from weatherproj.models import MonthRainData
 from bs4 import BeautifulSoup
 from datetime import date
+from datetime import timedelta
 
 # Cron job that updates the Rain data - fills in missing rain data
 # since 2000 and updates recent rain data that might have changed since
@@ -22,15 +23,8 @@ class Command(BaseCommand):
           break
         rain = self.findForMonthAndYear(month, year, allRain);
         shouldUpdate = False
-        if rain: # only update if no update date or update date is before end of that month
-          if rain.update_date:
-            if rain.update_date.year < year:
-              shouldUpdate = True
-            elif rain.update_date.year == year:
-              if rain.update_date.month <= month:
-                shouldUpdate = True
-          else:
-            shouldUpdate = True;
+        if rain:
+          shouldUpdate = should_update(rain)
           if shouldUpdate:
             rain.delete()
         else:
@@ -41,7 +35,21 @@ class Command(BaseCommand):
           rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
           rainObj.save() 
   
-  
+  # Helper to decide if we should update this rain object.
+  # Update if no update date or if update date is before the end
+  # of rain's month (with some buffer).
+  def should_update(rain):
+    if not rain.update_date:
+      return True
+    # approx end of month - using 28 since know all months have at least 28 days
+    rain_month_end = date(rain.year, rain.month, 28)
+    # add two weeks - buffer - so during two weeks after end of prev month
+    # will still update that month - in case there are changes/updates
+    two_weeks = timedelta(days=14)
+    rain_month_end = rain_month_end + two_weeks
+    if rain.update_date < rain_month_end:
+      return True
+    return False
 
   # Looks thru the list of MonthRainData objects for one with the
   # given month and year and returns that or none if not present.
