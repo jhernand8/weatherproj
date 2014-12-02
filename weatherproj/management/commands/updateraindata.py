@@ -34,6 +34,7 @@ class Command(BaseCommand):
           rainAmt = self.getRainAmountForMonth("KNUQ", month, year, False);
           rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
           rainObj.save() 
+    print outStr
   
   # Helper to decide if we should update this rain object.
   # Update if no update date or if update date is before the end
