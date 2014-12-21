@@ -114,7 +114,7 @@ var MonthTotalTable = React.createClass({
     var yearRows = [];
     var numYears = this.props.years.length;
     var opts = [];
-    opts.push(<option name="Average" value="Average">Average</value>
+    opts.push(<option name="Average" value="Average">Average</option>);
     for (var y = 0; y < numYears; y++) {
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
