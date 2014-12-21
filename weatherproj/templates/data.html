@@ -117,7 +117,7 @@ var MonthTotalTable = React.createClass({
       }
     }
     alert(str);
-    this.props.setProps({averages: newAvgs});
+    this.setProps({averages: newAvgs});
   },
   render: function() {
     var headerElems = getHeaderElems("Year");
