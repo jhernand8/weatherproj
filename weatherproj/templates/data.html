@@ -107,7 +107,17 @@ var getHeaderElems = function(firstElemName) {
 var MonthTotalTable = React.createClass({
   handleAvgSelectChange: function(event) {
     alert("changed:" + event.target.value);
-    
+    var selVal = event.target.value;
+    var newAvgs = {};
+    var str = "";
+    for (var i = 0; i < this.props.months.length; i++) {
+      if (this.props.months[i].year == selVal) {
+        newAvgs[this.props.months[i].month] = this.props.months[i].rain;
+        str += ":  " + this.props.months[i].year + ": " + selVal + ": " + this.props.months[i].rain + "----";
+      }
+    }
+    alert(str);
+    this.props.set("averages", newAvgs);
   },
   render: function() {
     var headerElems = getHeaderElems("Year");
@@ -128,6 +138,11 @@ var MonthTotalTable = React.createClass({
     for (var m = 1; m <= 12; m++) {
       avgRowTds.push(<td>{this.props.averages[m]}</td>);
     }
+    var dataAvgRowTds = [];
+    dataAvgRowTds.push(<td>Average</td>);
+    for (var m = 1; m <= 12; m++) {
+      dataAvgRowTds.push(<td>{this.props.dataAverages[m]}</td>);
+    }
     return (
       <div id="containingDiv">
         <h2>Rainfall data per month for 94043</h2>
@@ -136,6 +151,7 @@ var MonthTotalTable = React.createClass({
           </tr>
           { yearRows }
           <tr className="averageRow">{avgRowTds}</tr>
+          <tr className="dataAverageRow">{dataAvgRowTds}</tr>
          </table>
          <br/><br/>
          <select id="avgSelect" onChange={this.handleAvgSelectChange}>
@@ -149,7 +165,7 @@ var MonthTotalTable = React.createClass({
 });
 
 React.renderComponent(
-  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages}/>, document.getElementById("mainBodyDiv"));
+  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages} dataAverages={averages.averages}/>, document.getElementById("mainBodyDiv"));
 
 var RunningTotalsTable = React.createClass({
   render: function() {
