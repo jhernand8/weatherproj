@@ -105,6 +105,10 @@ var getHeaderElems = function(firstElemName) {
 };
 
 var MonthTotalTable = React.createClass({
+  handleAvgSelectChange: function(event) {
+    alert("changed:" + event.target.value);
+    
+  },
   render: function() {
     var headerElems = getHeaderElems("Year");
     var yearRows = [];
@@ -134,7 +138,7 @@ var MonthTotalTable = React.createClass({
           <tr className="averageRow">{avgRowTds}</tr>
          </table>
          <br/><br/>
-         <select id="avgSelect">
+         <select id="avgSelect" onChange={this.handleAvgSelectChange}>
           { opts }
          </select>
          <br/><br/>
