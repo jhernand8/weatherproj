@@ -109,11 +109,15 @@ var MonthTotalTable = React.createClass({
     var headerElems = getHeaderElems("Year");
     var yearRows = [];
     var numYears = this.props.years.length;
+    var opts = [];
+    opts.push(<option name="Average" value="Average">Average</value>
     for (var y = 0; y < numYears; y++) {
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
       yearRows.push(<YearRow year={currYear} allData={this.props.months} key={rowKey} />);
+      opts.push(<option name={currYear} value={currYear}>{currYear}</option>);
     }
+    opts.push(<option name="ComputeAverage" value="Compute Average">Compute Average</value>
 
     var avgRowTds = [];
     avgRowTds.push(<td>Average</td>);
@@ -129,6 +133,11 @@ var MonthTotalTable = React.createClass({
           { yearRows }
           <tr className="averageRow">{avgRowTds}</tr>
          </table>
+         <br/><br/>
+         <select id="avgSelect">
+          { opts }
+         </select>
+         <br/><br/>
          <br/><br/><br/><span className="source">data scraped from www.wunderground.com /history/airport/KNUQ</span>
        </div>
     );
