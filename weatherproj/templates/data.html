@@ -55,7 +55,7 @@ var YearRow = React.createClass({
       }
 
       if (currMonthYearData) {
-        monthCells.push(<YearMonthCell data={currMonthYearData}  key={i} />);
+        monthCells.push(<YearMonthCell data={currMonthYearData} averages={this.props.averages} month={i} key={i} />);
       }
       else {
         var empty = true;
@@ -72,7 +72,8 @@ var YearMonthCell = React.createClass({
     if (this.props.isEmpty) {
       return (<td>-</td>);
     }
-    var avg = this.props.data.avg;
+    var month = this.props.month;
+    var avg = this.props.averages[month];//this.props.data.avg;
     var rain = this.props.data.rain;
     var tdclass = "normal";
 
@@ -106,17 +107,13 @@ var getHeaderElems = function(firstElemName) {
 
 var MonthTotalTable = React.createClass({
   handleAvgSelectChange: function(event) {
-    alert("changed:" + event.target.value);
     var selVal = event.target.value;
     var newAvgs = {};
-    var str = "";
     for (var i = 0; i < this.props.months.length; i++) {
       if (this.props.months[i].year == selVal) {
         newAvgs[this.props.months[i].month] = this.props.months[i].rain;
-        str += ":  " + this.props.months[i].year + ": " + selVal + ": " + this.props.months[i].rain + "----";
       }
     }
-    alert(str);
     this.setProps({averages: newAvgs});
   },
   render: function() {
@@ -128,7 +125,7 @@ var MonthTotalTable = React.createClass({
     for (var y = 0; y < numYears; y++) {
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
-      yearRows.push(<YearRow year={currYear} allData={this.props.months} key={rowKey} />);
+      yearRows.push(<YearRow year={currYear} allData={this.props.months} averages={this.props.averages} key={rowKey} />);
       opts.push(<option name={currYear} value={currYear}>{currYear}</option>);
     }
     opts.push(<option name="ComputeAverage" value="Compute Average">Compute Average</option>);
