@@ -185,7 +185,7 @@ var RunningTotalsTable = React.createClass({
     for (var y = 0; y < numYears; y++) {
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
-      yearRows.push(<YearRow year={currYear} allData={this.props.totals.monthTotals} key={rowKey} />);
+      yearRows.push(<YearRow year={currYear} averages={this.props.totals.averages} allData={this.props.totals.monthTotals} key={rowKey} />);
     }
     return (
       <div id="runningTotals">
