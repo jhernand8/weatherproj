@@ -169,7 +169,6 @@ React.renderComponent(
 
 var RunningTotalsTable = React.createClass({
   render: function() {
-    alert("running totals");
     var headerRow = getHeaderElems("Year");
     var avgsRow = [];
     var avgs = {};
@@ -183,13 +182,11 @@ var RunningTotalsTable = React.createClass({
     this.props.dataAverages = avgs;
     var numYears = this.props.years.length;
     var yearRows = [];
-    alert("running totals2 before years");
     for (var y = 0; y < numYears; y++) {
       var currYear = this.props.years[y];
       var rowKey = "year" + currYear;
       yearRows.push(<YearRow year={currYear} averages={avgs} allData={this.props.totals.monthTotals} key={rowKey} />);
     }
-    alert("running totals2 years");
     return (
       <div id="runningTotals">
         <h2>Running totals for seasons</h2>
@@ -197,7 +194,7 @@ var RunningTotalsTable = React.createClass({
         <table>
           <tr>{headerRow}</tr>
           {yearRows}
-          <tr><td>Average running total</td>
+          <tr><td>Average</td>
             {avgsRow}
           </tr>
         </table>
