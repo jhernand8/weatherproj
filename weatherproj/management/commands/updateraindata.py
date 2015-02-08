@@ -15,7 +15,6 @@ class Command(BaseCommand):
   def handle(self, *args, **options):
     minYear = 2000;
     today = date.today()
-    outStr = ""
     allRain = MonthRainData.objects.order_by('year', 'month').all();
     for year in range(minYear, today.year + 1):
       for month in range(1, 13):
@@ -30,11 +29,9 @@ class Command(BaseCommand):
         else:
           shouldUpdate = True
         if shouldUpdate:
-          outStr += "updating rain for: " + str(year) + " " + str(month) + "\n"
           rainAmt = self.getRainAmountForMonth("KNUQ", month, year, False);
           rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
           rainObj.save() 
-    print outStr
   
   # Helper to decide if we should update this rain object.
   # Update if no update date or if update date is before the end
@@ -80,9 +77,15 @@ class Command(BaseCommand):
     parsed = BeautifulSoup(responsehtml)
     divs = parsed.select('div[class="precip-to-date"] > strong')
     if divs:
+      divText = ""
       if isAvg:
-        return float(divs[1].get_text())
-      return float(divs[0].get_text())
+        divText = divs[1].get_text()
+      else:
+        divText = divs[0].get_text()
+      if divText.find(" in") > -1:
+        ind = divText.find(" in")
+        divText = divText[:ind]
+      return float(divText)
     return float("0.00")
   # updates the average rain table 
   def initAvgRain(self, request):
