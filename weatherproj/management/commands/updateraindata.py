@@ -79,9 +79,9 @@ class Command(BaseCommand):
     if divs:
       divText = ""
       if isAvg:
-        divText = divs[1].get_text()
+        divText = divs[2].get_text()
       else:
-        divText = divs[0].get_text()
+        divText = divs[1].get_text()
       if divText.find(" in") > -1:
         ind = divText.find(" in")
         divText = divText[:ind]
