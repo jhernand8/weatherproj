@@ -62,7 +62,7 @@ class Command(BaseCommand):
   # weather underground for the given month and year
   # and given station
   def getUrlForMonth(self, station, month, year):
-    return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyHistory.html';
+    return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyCalendar.html';
 
 
   # Returns a decimal with the amount of rain as a decimal
