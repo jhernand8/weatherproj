@@ -29,7 +29,7 @@ class Command(BaseCommand):
         else:
           shouldUpdate = True
         if shouldUpdate:
-          rainAmt = self.getRainAmountForMonth("KNUQ", month, year, False);
+          rainAmt = self.getRainAmountForMonth("KSFO", month, year, False);
           rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
           rainObj.save() 
   
@@ -93,7 +93,7 @@ class Command(BaseCommand):
     for avg in allAvgs:
       avg.delete()
     for month in range(1, 13):
-      rainAvg = self.getRainAmountForMonth("KNUQ", month, 2013, True)
+      rainAvg = self.getRainAmountForMonth("KSFO", month, 2013, True)
       avg = AvgRainByMonth(month = month, avg_rain = rainAvg)
       avg.save()
     return http.HttpResponse('average data saved.')
