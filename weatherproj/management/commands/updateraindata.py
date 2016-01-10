@@ -32,7 +32,11 @@ class Command(BaseCommand):
           rainAmt = self.getRainAmountForMonth("KSFO", month, year, False);
           rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
           rainObj.save() 
-  
+    allAvgs = AvgRainByMonth.objects.all()
+    if len(allAvgs) < 11:
+      self.initAvgRain();
+
+
   # Helper to decide if we should update this rain object.
   # Update if no update date or if update date is before the end
   # of rain's month (with some buffer).
@@ -88,7 +92,7 @@ class Command(BaseCommand):
       return float(divText)
     return float("0.00")
   # updates the average rain table 
-  def initAvgRain(self, request):
+  def initAvgRain(self):
     allAvgs = AvgRainByMonth.objects.all()
     for avg in allAvgs:
       avg.delete()
@@ -96,4 +100,3 @@ class Command(BaseCommand):
       rainAvg = self.getRainAmountForMonth("KSFO", month, 2013, True)
       avg = AvgRainByMonth(month = month, avg_rain = rainAvg)
       avg.save()
-    return http.HttpResponse('average data saved.')
