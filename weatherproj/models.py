@@ -17,5 +17,5 @@ class AvgRainByMonth(models.Model):
 # Stores the zip codes to load data for as well as the url to use
 # to load/get the data.
 class ZipToUrl(models.Model):
-  zip = models.TextField(unique=True)
+  zip = models.TextField(unique=True, primary_key = True)
   url = models.TextField()
