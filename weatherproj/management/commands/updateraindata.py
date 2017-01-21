@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 import urllib2
 from weatherproj.models import AvgRainByMonth
 from weatherproj.models import MonthRainData
+from weatherproj.models import ZipToUrl
 from bs4 import BeautifulSoup
 from datetime import date
 from datetime import timedelta
@@ -15,26 +16,31 @@ class Command(BaseCommand):
   def handle(self, *args, **options):
     minYear = 2000;
     today = date.today()
+    allZips = ZipToUrl.objects.all();
     allRain = MonthRainData.objects.order_by('year', 'month').all();
-    for year in range(minYear, today.year + 1):
-      for month in range(1, 13):
-        if year == today.year and month > today.month:
-          break
-        rain = self.findForMonthAndYear(month, year, allRain);
-        shouldUpdate = False
-        if rain:
-          shouldUpdate = self.should_update(rain)
+    # for each zip code
+    for currZip in allZips:
+      # go thru all months since minYear and see if there's data that needs
+      # to be created or updated.
+      for year in range(minYear, today.year + 1):
+        for month in range(1, 13):
+          if year == today.year and month > today.month:
+            break
+          rain = self.findForMonthAndYear(month, year, currZip.zip, allRain);
+          shouldUpdate = False
+          if rain:
+            shouldUpdate = self.should_update(rain)
+            if shouldUpdate:
+              rain.delete()
+          else:
+            shouldUpdate = True
           if shouldUpdate:
-            rain.delete()
-        else:
-          shouldUpdate = True
-        if shouldUpdate:
-          rainAmt = self.getRainAmountForMonth("KSFO", month, year, False);
-          rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today)
-          rainObj.save() 
+            rainAmt = self.getRainAmountForMonth(currZip, month, year, False);
+            rainObj = MonthRainData(month = month, year = year, rain = rainAmt, update_date = today, zip = currZip.zip)
+            rainObj.save() 
+    # upate any averages if missing for any zip code
     allAvgs = AvgRainByMonth.objects.all()
-    if len(allAvgs) < 11:
-      self.initAvgRain();
+    self.initAvgRain(allAvgs, allZips);
 
 
   # Helper to decide if we should update this rain object.
@@ -55,9 +61,9 @@ class Command(BaseCommand):
 
   # Looks thru the list of MonthRainData objects for one with the
   # given month and year and returns that or none if not present.
-  def findForMonthAndYear(self, month, year, allRain):
+  def findForMonthAndYear(self, month, year, zip, allRain):
     for rain in allRain:
-      if rain.month == month and rain.year == year:
+      if rain.month == month and rain.year == year and rain.zip == zip:
         return rain
     return None;
   
@@ -73,8 +79,8 @@ class Command(BaseCommand):
   # for the given month and year and place.
   # if isAvg, returns the average for the month. Otherwise the
   # total for the month
-  def getRainAmountForMonth(self, station, month, year, isAvg):
-    urlForData = self.getUrlForMonth(station, month, year)
+  def getRainAmountForMonth(self, zipToUrl, month, year, isAvg):
+    urlForData = self.getUrlForMonth(zipToUrl.url, month, year)
     response = urllib2.urlopen(urlForData)
     responseData = response.readlines()
     responsehtml = "".join(responseData)
@@ -91,12 +97,23 @@ class Command(BaseCommand):
         divText = divText[:ind]
       return float(divText)
     return float("0.00")
+
   # updates the average rain table 
-  def initAvgRain(self):
-    allAvgs = AvgRainByMonth.objects.all()
-    for avg in allAvgs:
-      avg.delete()
-    for month in range(1, 13):
-      rainAvg = self.getRainAmountForMonth("KSFO", month, 2013, True)
-      avg = AvgRainByMonth(month = month, avg_rain = rainAvg)
-      avg.save()
+  def initAvgRain(self, allAvgs, allZips):
+    for currZipToUrl in allZips:
+      for month in range(1, 13):
+        if self.needsAvgData(currZipToUrl, month, allAvgs):
+          rainAvg = self.getRainAmountForMonth(currZipToUrl.url, month, 2013, True)
+          avg = AvgRainByMonth(month = month, avg_rain = rainAvg, zip = currUrlToZip.zip)
+          avg.save()
+          
+
+  # Returns true if there is no data in all the averages for the given
+  # month and zip code.
+  def needsAvgData(self, zipToUrl, month, allAvgData):
+    for avg in allAvgData:
+      if avg.zip == zipToUrl.zip and avg.month == month:
+        return False
+    return True
+
+
