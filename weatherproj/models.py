@@ -6,8 +6,16 @@ class MonthRainData(models.Model):
   rain = models.FloatField()
   year = models.IntegerField()
   update_date = models.DateField()
+  zip = models.TextField()
 
 # stores the average amount of rain for a given month
 class AvgRainByMonth(models.Model):
   month = models.IntegerField(primary_key = True)
   avg_rain = models.FloatField()
+  zip = models.TextField()
+
+# Stores the zip codes to load data for as well as the url to use
+# to load/get the data.
+class ZipToUrl(models.Model):
+  zip = models.TextField(unique=True)
+  url = models.TextField()
