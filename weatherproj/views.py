@@ -19,7 +19,7 @@ def home(request):
   allAvgs = AvgRainByMonth.objects.order_by('month')
   retStr = 'Weather home test test ';
   years = Set()
-  zip = request.get("zip");
+  zip = request.GET["zip"];
   month_data = []
   if allRain:
     for rain in allRain:
