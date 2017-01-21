@@ -5,6 +5,7 @@ import json
 import sys
 from weatherproj.models import AvgRainByMonth
 from weatherproj.models import MonthRainData
+from weatherproj.models import ZipToUrl
 from bs4 import BeautifulSoup
 from datetime import date
 import json
@@ -18,6 +19,7 @@ def home(request):
   allAvgs = AvgRainByMonth.objects.order_by('month')
   retStr = 'Weather home test test ';
   years = Set()
+  zip = request.get("zip");
   month_data = []
   if allRain:
     for rain in allRain:
@@ -39,7 +41,7 @@ def home(request):
                            'years' : mark_safe(json.dumps(yearsObj, cls=DjangoJSONEncoder)),
                            'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)),
                            'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder))
-                           })
+                           'zip': zip})
   return http.HttpResponse(template.render(context))
 
 # Constructs object to pass to html for the running total and average
