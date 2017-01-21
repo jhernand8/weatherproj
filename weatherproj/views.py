@@ -40,7 +40,7 @@ def home(request):
                            'month_data' : mark_safe(json.dumps(month_data, cls=DjangoJSONEncoder)),
                            'years' : mark_safe(json.dumps(yearsObj, cls=DjangoJSONEncoder)),
                            'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)),
-                           'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder))
+                           'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder)),
                            'zip': zip})
   return http.HttpResponse(template.render(context))
 
