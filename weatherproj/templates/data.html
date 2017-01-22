@@ -42,7 +42,7 @@ var Zips = React.createClass({
     var items = [];
     for (var i = 0; i < this.props.zipsToUrls.length; i++) {
       var currZip = this.props.zipsToUrls[i];
-      var item = <li><a href='/home/?zip={currZip.zip}'>{currZip.zip}</a></li>;
+      var item = <li><a href={"/home/?zip=" + currZip.zip}>{currZip.zip}</a></li>;
       items.push(item);
     }
     return <div>All zip codes with data<br/><ul>{items}</ul></div>;
