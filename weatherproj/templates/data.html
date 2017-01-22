@@ -33,10 +33,24 @@ span.source {
 </style>
 <script src="https://fb.me/react-0.12.0.js"></script>
 <script src="https://fb.me/JSXTransformer-0.12.0.js"></script>
-<script>
+<script type="text/jsx">
 var zipsToUrls = {{ zipsToUrls }};
 var z = {{ z }};
 var l = {{ l}};
+/** @jsx React.DOM */
+var Zips = React.createClass({
+  render: function() {
+    var items = [];
+    for (var i = 0; i < this.props.zipsToUrls.length; i++) {
+      var currZip = this.props.zipsToUrls[i];
+      var item = <li><a href="/home/?zip={currZip.zip}">{currZip}</a></li>;
+    }
+    return <div>All zip codes with data<br/><ul>{items}</ul></div>;
+  }
+});
+React.renderComponent(
+  <Zips zipsToUrls={zipsToUrls} />,
+   document.getElementById("zips"));
 </script>
 <script type="text/jsx">
 {% if hasData %}
