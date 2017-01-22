@@ -32,7 +32,7 @@ def home(request):
   zipJson = makeZipUrlJson(allZipsToUrls);
   # if no zip code just show list of zip codes
   if "zip" not in request.GET:
-    context = RequestContext(request, { 'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder)), 'hasData': False, 'l': len(zipJson), 'z': zipJson});
+    context = RequestContext(request, { 'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder)), 'hasData': False});
     return http.HttpResponse(template.render(context));
   
   zip = request.GET["zip"];
