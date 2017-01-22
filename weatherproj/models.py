@@ -10,9 +10,10 @@ class MonthRainData(models.Model):
 
 # stores the average amount of rain for a given month
 class AvgRainByMonth(models.Model):
-  month = models.IntegerField(primary_key = True)
+  month = models.IntegerField()
   avg_rain = models.FloatField()
   zip = models.TextField()
+  avg_id = models.AutoField(primary_key = True)
 
 # Stores the zip codes to load data for as well as the url to use
 # to load/get the data.
