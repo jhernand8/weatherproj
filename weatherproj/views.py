@@ -60,7 +60,7 @@ def home(request):
                            'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)),
                            'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder)),
                            'zip': zip, 'hasData': True,
-                           'zipsToUrls': ''})
+                           'zipsToUrls': mark_save(json.dumps(zipJson, cls=DjangoJSONEncoder))})
   return http.HttpResponse(template.render(context))
 
 # Constructs object to pass to html for the running total and average
