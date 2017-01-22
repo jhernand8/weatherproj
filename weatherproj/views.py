@@ -14,12 +14,31 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.safestring import mark_safe
 from sets import Set
 
+# Helper function to turn list of ZipToUrl into json array.
+def makeZipUrlJson(allZipsToUrls):
+  zipData = []
+  for zipToUrl in allZipsToUrls:
+    data = {}
+    data["zip"] = zipToUrl.zip
+    data["url"] = zipToUrl.url
+    zipData.append(data)
+  return zipData
+
 def home(request):
-  allRain = MonthRainData.objects.order_by('year', 'month').all()
-  allAvgs = AvgRainByMonth.objects.order_by('month')
   retStr = 'Weather home test test ';
   years = Set()
+  template = loader.get_template('data.html')
+  allZipsToUrls = ZipToUrl.objects.all();
+  zipJson = makeZipUrlJson(allZipsToUrls);
+  # if no zip code just show list of zip codes
+  if "zip" not in request.GET:
+    context = RequestContext(request, { 'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder)), 'hasData': False});
+    return http.HttpResponse(template.render(context));
+  
   zip = request.GET["zip"];
+  currZip = request.GET["zip"];
+  allRain = MonthRainData.objects.order_by('year', 'month').all().filter(zip=currZip)
+  allAvgs = AvgRainByMonth.objects.order_by('month').filter(zip=currZip)
   month_data = []
   if allRain:
     for rain in allRain:
@@ -33,15 +52,15 @@ def home(request):
   yearsObj = {}
   yearsObj["years"] = list(years)
 
-  avgs = getAvgByMonth()
+  avgs = getAvgByMonth(zip)
   totals = getRunningTotalObj(allRain, allAvgs)
-  template = loader.get_template('data.html')
   context = RequestContext(request, {
                            'month_data' : mark_safe(json.dumps(month_data, cls=DjangoJSONEncoder)),
                            'years' : mark_safe(json.dumps(yearsObj, cls=DjangoJSONEncoder)),
                            'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)),
                            'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder)),
-                           'zip': zip})
+                           'zip': zip, 'hasData': True,
+                           'zipsToUrls': ''})
   return http.HttpResponse(template.render(context))
 
 # Constructs object to pass to html for the running total and average
@@ -81,10 +100,12 @@ def getRunningTotalAverages(allAvgs):
   return totals
   
 # Returns object of the average rain by month which can be converted to a json object
-def getAvgByMonth():
+def getAvgByMonth(zip):
   allAvgs = AvgRainByMonth.objects.order_by('month');
   avgsData = {}
   for avg in allAvgs:
+    if avg.zip != zip:
+      continue;
     avgsData[avg.month] = avg.avg_rain;
   data = {}
   data["averages"] = avgsData;

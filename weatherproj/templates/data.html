@@ -34,13 +34,15 @@ span.source {
 <script src="https://fb.me/react-0.12.0.js"></script>
 <script src="https://fb.me/JSXTransformer-0.12.0.js"></script>
 <script type="text/jsx">
+{% if hasData %}
 /** @jsx React.DOM */
 var monthData = {{ month_data }};
 var years = {{ years }};
 years.years.sort();
 var averages = {{ averages }};
 var totals = {{ totals }};
-
+var zip = {{ zip }};
+var allZipsToUrls = {{ zipsToUrls }};
 var YearRow = React.createClass({
   render: function() {
     var monthCells = [];
@@ -207,10 +209,20 @@ var RunningTotalsTable = React.createClass({
 React.renderComponent(
   <RunningTotalsTable totals={totals} years={years.years} />,
    document.getElementById("runningTotalsDiv"));
+{% endif %}
 </script>
 </head>
 <body>
+<div id="zips">
+
+</div>
 <div id="mainBodyDiv">
+All zip codes with data:<br/>
+  <ul>
+  {% for zipUrl in zipsToUrls %}
+    <li><a href="/home/?zip={{zipUrl.zip}}">{{ zipUrl.zip}}</></li>
+  {% endfor %}
+  </ul>
 </div>
 <div id="runningTotalsDiv"></div>
 <br/><br/>
