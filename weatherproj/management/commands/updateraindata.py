@@ -103,7 +103,7 @@ class Command(BaseCommand):
     for currZipToUrl in allZips:
       for month in range(1, 13):
         if self.needsAvgData(currZipToUrl, month, allAvgs):
-          rainAvg = self.getRainAmountForMonth(currZipToUrl.url, month, 2013, True)
+          rainAvg = self.getRainAmountForMonth(currZipToUrl, month, 2013, True)
           avg = AvgRainByMonth(month = month, avg_rain = rainAvg, zip = currUrlToZip.zip)
           avg.save()
           
