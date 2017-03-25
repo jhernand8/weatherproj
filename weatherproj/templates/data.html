@@ -166,7 +166,7 @@ var MonthTotalTable = React.createClass({
     }
     return (
       <div id="containingDiv">
-        <h2>Rainfall data per month for 94043</h2>
+        <h2>Rainfall data per month for {this.props.zip}</h2>
         <table>
           <tr> {headerElems}
           </tr>
@@ -186,7 +186,7 @@ var MonthTotalTable = React.createClass({
 });
 
 React.renderComponent(
-  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages} dataAverages={averages.averages}/>, document.getElementById("mainBodyDiv"));
+  <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages} dataAverages={averages.averages} zip={zip}/>, document.getElementById("mainBodyDiv"));
 
 var RunningTotalsTable = React.createClass({
   render: function() {
