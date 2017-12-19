@@ -31,8 +31,8 @@ span.source {
 }
 
 </style>
-<script src="https://fb.me/react-0.12.0.js"></script>
-<script src="https://fb.me/JSXTransformer-0.12.0.js"></script>
+<script src="https://fb.me/react-0.13.0.js"></script>
+<script src="https://fb.me/JSXTransformer-0.13.0.js"></script>
 <script type="text/jsx">
 /** @jsx React.DOM */
 var zipsToUrls = {{ zipsToUrls }};
@@ -47,7 +47,7 @@ var Zips = React.createClass({
     return <div>All zip codes with data<br/><ul>{items}</ul></div>;
   }
 });
-React.renderComponent(
+React.render(
   <Zips zipsToUrls={zipsToUrls} />,
    document.getElementById("zips"));
 </script>
@@ -185,7 +185,7 @@ var MonthTotalTable = React.createClass({
   }
 });
 
-React.renderComponent(
+React.render(
   <MonthTotalTable  months={monthData} years={years.years} averages={averages.averages} dataAverages={averages.averages} zip={zip}/>, document.getElementById("mainBodyDiv"));
 
 var RunningTotalsTable = React.createClass({
@@ -224,7 +224,7 @@ var RunningTotalsTable = React.createClass({
   }
 });
 
-React.renderComponent(
+React.render(
   <RunningTotalsTable totals={totals} years={years.years} />,
    document.getElementById("runningTotalsDiv"));
 {% endif %}
