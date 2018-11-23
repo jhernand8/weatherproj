@@ -88,7 +88,7 @@ class Command(BaseCommand):
     responseData = response.readlines()
     responsehtml = "".join(responseData)
     parsed = BeautifulSoup(responsehtml)
-    ths = parsed.select('th')
+    ths = parsed.find_all('th')
     print("ths: " + str(len(ths)) + ": " + str(ths));
     for th in ths:
       if th.get_text() == "Precipitation":
