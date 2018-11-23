@@ -89,8 +89,10 @@ class Command(BaseCommand):
     responsehtml = "".join(responseData)
     parsed = BeautifulSoup(responsehtml)
     ths = parsed.select('th')
+    print("ths: " + str(len(ths)) + ": " + str(ths));
     for th in ths:
       if th.get_text() == "Precipitation":
+        print(" found precip " + urlForData + ": " + str(th));
         ns = th.next_sibling.next_sibling.next_sibling.next_sibling;
         if ns:
           print("ns: " + ns.get_text() + ": " + str(ns) + "\n");
