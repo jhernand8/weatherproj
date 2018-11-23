@@ -72,7 +72,7 @@ class Command(BaseCommand):
   # weather underground for the given month and year
   # and given station
   def getUrlForMonth(self, station, month, year):
-    if station eq "KSFO":
+    if station == "KSFO":
       return 'http://www.wunderground.com/history/monthly/us/ca/san-francisco/' + station + '/date' + str(year) + '-' + str(month);
       
     return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyCalendar.html';
@@ -90,7 +90,7 @@ class Command(BaseCommand):
     parsed = BeautifulSoup(responsehtml)
     ths = parsed.select('th')
     for th in ths:
-      if th.get_text() eq "Precipitation":
+      if th.get_text() == "Precipitation":
         ns = th.next_sibling.next_sibling.next_sibling.next_sibling;
         if ns:
           print("ns: " + ns.get_text() + ": " + str(ns) + "\n");
