@@ -72,6 +72,9 @@ class Command(BaseCommand):
   # weather underground for the given month and year
   # and given station
   def getUrlForMonth(self, station, month, year):
+    if station eq "KSFO":
+      return 'http://www.wunderground.com/history/monthly/us/ca/san-francisco/' + station + '/date' + str(year) + '-' + str(month);
+      
     return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyCalendar.html';
 
 
