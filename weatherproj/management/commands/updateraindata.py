@@ -73,9 +73,9 @@ class Command(BaseCommand):
   # and given station
   def getUrlForMonth(self, station, month, year):
     if station == "KSFO":
-      return 'http://www.wunderground.com/history/monthly/us/ca/san-francisco/' + station + '/date' + str(year) + '-' + str(month);
+      return 'https://www.wunderground.com/history/monthly/us/ca/san-francisco/' + station + '/date' + str(year) + '-' + str(month);
       
-    return 'http://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyCalendar.html';
+    return 'https://www.wunderground.com/history/airport/' + station + '/' + str(year) + '/' + str(month) + '/1/MonthlyCalendar.html';
 
 
   # Returns a decimal with the amount of rain as a decimal
@@ -89,7 +89,7 @@ class Command(BaseCommand):
     responsehtml = "".join(responseData)
     parsed = BeautifulSoup(responsehtml)
     ths = parsed.find_all('th')
-    print("ths: " + str(len(ths)) + ": " + str(ths));
+    print(urlForData + " ths: " + str(len(ths)) + ": " + str(ths));
     for th in ths:
       if th.get_text() == "Precipitation":
         print(" found precip " + urlForData + ": " + str(th));
