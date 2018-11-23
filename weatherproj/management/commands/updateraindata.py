@@ -85,6 +85,13 @@ class Command(BaseCommand):
     responseData = response.readlines()
     responsehtml = "".join(responseData)
     parsed = BeautifulSoup(responsehtml)
+    ths = parsed.select('th')
+    for th in ths:
+      if th.get_text() eq "Precipitation":
+        ns = th.next_sibling.next_sibling.next_sibling.next_sibling;
+        if ns:
+          print("ns: " + ns.get_text() + ": " + str(ns) + "\n");
+          return float(ns.get_text());
     divs = parsed.select('div[class="precip-to-date"] > strong')
     if divs:
       divText = ""
