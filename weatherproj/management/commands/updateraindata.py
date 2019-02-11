@@ -47,6 +47,9 @@ class Command(BaseCommand):
   # Update if no update date or if update date is before the end
   # of rain's month (with some buffer).
   def should_update(self, rain):
+    # as of end of 2018/early 2019 can't use api so don't update as will overwrite any manually added data
+    if True:
+      return False 
     if not rain.update_date:
       return True
     # approx end of month - using 28 since know all months have at least 28 days
