@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-import urllib2
+from urllib.request import urlopen
 from weatherproj.models import AvgRainByMonth
 from weatherproj.models import MonthRainData
 from weatherproj.models import ZipToUrl
@@ -87,7 +87,7 @@ class Command(BaseCommand):
   # total for the month
   def getRainAmountForMonth(self, zipToUrl, month, year, isAvg):
     urlForData = self.getUrlForMonth(zipToUrl.url, month, year)
-    response = urllib2.urlopen(urlForData)
+    response = urlopen(urlForData)
     responseData = response.readlines()
     responsehtml = "".join(responseData)
     parsed = BeautifulSoup(responsehtml)
