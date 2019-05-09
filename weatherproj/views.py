@@ -1,6 +1,6 @@
 from django import http
+from django.shortcuts import render
 from django.template import RequestContext, loader
-import urllib2
 import json
 import sys
 from weatherproj.models import AvgRainByMonth
@@ -12,7 +12,6 @@ import json
 from json import JSONEncoder
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.safestring import mark_safe
-from sets import Set
 
 # Helper function to turn list of ZipToUrl into json array.
 def makeZipUrlJson(allZipsToUrls):
@@ -26,14 +25,13 @@ def makeZipUrlJson(allZipsToUrls):
 
 def home(request):
   retStr = 'Weather home test test ';
-  years = Set()
-  template = loader.get_template('data.html')
+  years = set()
   allZipsToUrls = ZipToUrl.objects.all();
   zipJson = makeZipUrlJson(allZipsToUrls);
   # if no zip code just show list of zip codes
   if "zip" not in request.GET:
-    context = RequestContext(request, { 'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder)), 'hasData': False});
-    return http.HttpResponse(template.render(context));
+    context = { 'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder)), 'hasData': False};
+    return render(request, 'data.html', context);
   
   zip = request.GET["zip"];
   currZip = request.GET["zip"];
@@ -54,14 +52,14 @@ def home(request):
 
   avgs = getAvgByMonth(zip)
   totals = getRunningTotalObj(allRain, allAvgs)
-  context = RequestContext(request, {
+  context = {
                            'month_data' : mark_safe(json.dumps(month_data, cls=DjangoJSONEncoder)),
                            'years' : mark_safe(json.dumps(yearsObj, cls=DjangoJSONEncoder)),
                            'averages' : mark_safe(json.dumps(avgs, cls=DjangoJSONEncoder)),
                            'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder)),
                            'zip': zip, 'hasData': True,
-                           'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder))})
-  return http.HttpResponse(template.render(context))
+                           'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder))}
+  return render(request, 'data.html', context))
 
 # Constructs object to pass to html for the running total and average
 # running total for each month in each year of rainfall for that season -

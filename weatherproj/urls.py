@@ -1,11 +1,12 @@
-from django.conf.urls import patterns, include, url
 from django.contrib import admin
-
-urlpatterns = patterns('',
+from django.urls import path
+admin.autodiscover()
+import weatherproj.views
+urlpatterns = [
     # Examples:
     # url(r'^$', 'weatherproj.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^home/', 'weatherproj.views.home', name='home'),
-)
+    path('admin/', admin.site.urls),
+    path('home/', weatherproj.views.home),
+]

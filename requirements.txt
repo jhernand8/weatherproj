@@ -1,9 +1,6 @@
-Django==1.7.1
-SQLAlchemy==0.9.8
-dj-database-url==0.3.0
-django-postgrespool==0.3.0
-gunicorn==19.1.1
-psycopg2==2.5.4
+Django==2.1.1
+dj-database-url==0.5.0
+gunicorn==19.9.0
+psycopg2==2.7.5
 whitenoise==1.0.3
-wsgiref==0.1.2
-beautifulsoup4==4.3.2
+beautifulsoup4==4.4.0
