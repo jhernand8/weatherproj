@@ -59,7 +59,7 @@ def home(request):
                            'totals' : mark_safe(json.dumps(totals, cls=DjangoJSONEncoder)),
                            'zip': zip, 'hasData': True,
                            'zipsToUrls': mark_safe(json.dumps(zipJson, cls=DjangoJSONEncoder))}
-  return render(request, 'data.html', context))
+  return render(request, 'data.html', context)
 
 # Constructs object to pass to html for the running total and average
 # running total for each month in each year of rainfall for that season -
